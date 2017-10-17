@@ -4,10 +4,12 @@ environment:
   SCALA_VERSION: "2.11"
   matrix:
     - PYTHON: "C:\\Python35"
-      SNAPPY_WHEEL: "http://www.lfd.uci.edu/~gohlke/pythonlibs/zhckc95n/python_snappy-0.5.1-cp35-cp35m-win32.whl"
+      SNAPPY_WHEEL: "tools\\python_snappy-0.5.1-cp35-cp35m-win32.whl"
     # - PYTHON: "C:\\Python35-x64"
     # - PYTHON: "C:\\Python36"
     # - PYTHON: "C:\\Python36-x64"
+
+image: Visual Studio 2015
 
 install:
 - "%PYTHON%\\python.exe -m pip install %SNAPPY_WHEEL%"
