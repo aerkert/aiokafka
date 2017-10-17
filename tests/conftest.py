@@ -103,12 +103,13 @@ def kafka_server(request, docker, docker_ip_address,
     kafka_host = docker_ip_address
     kafka_port = unused_port()
     kafka_ssl_port = unused_port()
+    ssl_cert_volume = "/ssl_cert" if sys.platform != "win32" else "\\ssl_cert"
     container = docker.create_container(
         image=image,
         name='aiokafka-tests',
         # name='aiokafka-tests-{}'.format(session_id),
         ports=[2181, kafka_port, kafka_ssl_port],
-        volumes=['/ssl_cert'],
+        volumes=[ssl_cert_volume],
         environment={
             'ADVERTISED_HOST': kafka_host,
             'ADVERTISED_PORT': kafka_port,
@@ -123,7 +124,7 @@ def kafka_server(request, docker, docker_ip_address,
             },
             binds={
                 str(ssl_folder.resolve()): {
-                    "bind": "/ssl_cert",
+                    "bind": ssl_cert_volume,
                     "mode": "ro"
                 }
             }))
