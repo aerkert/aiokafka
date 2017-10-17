@@ -103,14 +103,14 @@ def kafka_server(request, docker, docker_ip_address,
     kafka_host = docker_ip_address
     kafka_port = unused_port()
     kafka_ssl_port = unused_port()
-    ssl_cert_volume = "/ssl_cert" if sys.platform != "win32" else \
-        r"//c/sl_cert"
+    # ssl_cert_volume = "/ssl_cert" if sys.platform != "win32" else \
+    #     r"//c/sl_cert"
     container = docker.create_container(
         image=image,
         name='aiokafka-tests',
         # name='aiokafka-tests-{}'.format(session_id),
         ports=[2181, kafka_port, kafka_ssl_port],
-        volumes=[ssl_cert_volume],
+        # volumes=[ssl_cert_volume],
         environment={
             'ADVERTISED_HOST': kafka_host,
             'ADVERTISED_PORT': kafka_port,
@@ -123,12 +123,13 @@ def kafka_server(request, docker, docker_ip_address,
                 kafka_port: (kafka_host, kafka_port),
                 kafka_ssl_port: (kafka_host, kafka_ssl_port)
             },
-            binds={
-                str(ssl_folder.resolve()): {
-                    "bind": ssl_cert_volume,
-                    "mode": "ro"
-                }
-            }))
+            # binds={
+            #     # str(ssl_folder.resolve()): {
+            #     #     "bind": ssl_cert_volume,
+            #     #     "mode": "ro"
+            #     # }
+            # }
+        ))
     docker.start(container=container['Id'])
     yield kafka_host, kafka_port, kafka_ssl_port
     docker.kill(container=container['Id'])
