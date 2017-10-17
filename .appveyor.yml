@@ -23,7 +23,7 @@ build: off
 
 test_script:
 - "%PYTHON%\\python.exe -c \"import sys; print(sys.version)\""
-- "%PYTHON%\\python.exe -m pytest -svv --cov=aiokafka --cov-report=xml --junit-xml=results.xml --docker-image=aiolibs/kafka:%SCALA_VERSION%_%KAFKA_VERSION% tests"
+- "%PYTHON%\\python.exe -m pytest -svv --cov=aiokafka --cov-report=xml --junit-xml=results.xml --docker-image=aiolibs/kafka:%SCALA_VERSION%_%KAFKA_VERSION% tests\\test_client.py"
 
 on_finish:
 - ps: >-
