@@ -103,7 +103,7 @@ def kafka_server(request, docker, docker_ip_address,
     kafka_host = docker_ip_address
     kafka_port = unused_port()
     kafka_ssl_port = unused_port()
-    ssl_cert_volume = "/ssl_cert" if sys.platform != "win32" else "\\ssl_cert"
+    ssl_cert_volume = "/ssl_cert" if sys.platform != "win32" else r"\ssl_cert"
     container = docker.create_container(
         image=image,
         name='aiokafka-tests',
