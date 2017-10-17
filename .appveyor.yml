@@ -1,0 +1,27 @@
+environment:
+  PYTHONASYNCIODEBUG: "1"
+  KAFKA_VERSION: "0.10.2.1"
+  SCALA_VERSION: "2.11"
+  matrix:
+    - PYTHON: "C:\\Python35"
+    - PYTHON: "C:\\Python35-x64"
+    - PYTHON: "C:\\Python36"
+    - PYTHON: "C:\\Python36-x64"
+
+install:
+- "%PYTHON%\\python.exe -m pip install -r requirements-win-test.txt"
+- "%PYTHON%\\python.exe -m pip install -e ."
+
+build: off
+
+test_script:
+- "%PYTHON%\\python.exe -c \"import sys; print(sys.version)\""
+- "%PYTHON%\\python.exe -m pytest -svv --cov=aiokafka --cov-report=xml --junit-xml=results.xml --docker-image=aiolibs/kafka:%SCALA_VERSION%_%KAFKA_VERSION% tests"
+
+on_finish:
+- ps: >-
+    $wc = New-Object 'System.Net.WebClient'
+
+    $wc.UploadFile("https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path results.xml))
+- "%PYTHON%\\python.exe -m pip install codecov"
+- "%PYTHON%\\python.exe -m codecov -f \"coverage.xml\""
