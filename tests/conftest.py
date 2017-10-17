@@ -57,7 +57,7 @@ def ssl_folder(docker_ip_address):
 @pytest.fixture(scope='session')
 def docker_ip_address(docker):
     """Returns IP address of the docker daemon service."""
-    if sys.platform == 'darwin' or sys.platform == 'windows':
+    if sys.platform == 'darwin' or sys.platform == 'win32':
         # docker for mac publishes ports on localhost
         return '127.0.0.1'
     else:
